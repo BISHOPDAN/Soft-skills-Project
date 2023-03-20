@@ -1,0 +1,62 @@
+{% extends 'partials/_account_layout.html' %} 
+{% load static i18n %}
+{% block title %} {% trans "Profile Settings" %} {% endblock title %}
+{% block stylesheets %}
+<style>
+  #d_flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>
+{% endblock stylesheets %}
+
+
+{% block body %}
+<div class="col-xl-9">
+  <div class="border ps-3 pe-3 container pb-2">
+    <form class="" action="" method="POST">
+      {% csrf_token %}
+      <h4 class="h3 align-content-center flex-row border-bottom pb-3 pt-3">
+        Settings
+      </h4>
+      <div class="pb-1 pt-1">
+        <h3 class="h6 mb-2">{% trans "Profile Settings" %}</h3>
+        <div class="form-check form-switch">
+          {% if profile_settings.show_public_profile %}
+          <input type="checkbox" checked class="form-check-input" name="show_public_profile" id="show_public_profile">
+          {% else %}
+          <input type="checkbox" class="form-check-input" name="show_public_profile" id="show_public_profile">
+          {% endif %}
+          <label for="show_public_profile" class="form-check-label">{% trans "Your profile's public visibility" %}</label>
+        </div>
+      </div>
+      <hr />
+      <div class="pb-1 pt-1">
+        <h3 class="h6 mb-2 mt-3">{% trans "Notification Settings" %}</h3>
+        <p>{% trans "Choose the type of notifications you want to receive" %}</p>
+        <div class="form-check form-switch">
+          {% if profile_settings.receive_email %}
+          <input type="checkbox" class="form-check-input" name="receive_email" id="email_notification" checked>
+          {% else %}
+          <input type="checkbox" class="form-check-input" name="receive_email" id="email_notification">
+          {% endif %}
+          <label for="email_notification" class="form-check-label">{% trans "Notify me via email when logged in" %}</label>
+        </div>
+        <div class="form-check form-switch">
+          {% if profile_settings.receive_sms %}
+          <input type="checkbox" class="form-check-input" name="receive_sms" id="sms_notification" checked>
+          {% else %}
+          <input type="checkbox" class="form-check-input" name="receive_sms" id="sms_notification">
+          {% endif %}
+          <label for="sms_notification" class="form-check-label">{% trans "Send SMS confirmation for all online payments" %}</label>
+        </div>
+      </div>
+      <div class="fc-button-group text-end">
+        <button type="submit" class="btn btn-primary me-2">{% trans "Save changes" %}</button>
+        <button type="reset" class="btn btn-secondary bg-opacity-25">{% trans "Cancel" %}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock body %}

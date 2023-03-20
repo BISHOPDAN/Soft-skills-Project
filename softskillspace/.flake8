@@ -1,0 +1,17 @@
+[flake8]
+extend-ignore = F403,F405
+
+exclude = 
+    .git
+    __pycache__
+    docs/source/conf.py
+    old
+    build
+    dist
+    env
+    venv
+    migrations
+    *settings.py
+    apps.py
+
+max-complexity = 10

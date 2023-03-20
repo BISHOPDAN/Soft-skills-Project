@@ -1,0 +1,67 @@
+{% extends "partials/_base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %} {{event.title}} {% endblock title %}
+{% block body %}
+
+<section class="pt-5 pb-0">
+<div class="container">
+  <div class="row g-0 g-lg-5">
+
+
+    <div class="col-lg-4">
+      <div class="row">
+        <div class="col-md-6 col-lg-12">
+
+          <div class="card shadow p-2 mb-4 text-center">
+            <div class="rounded-3">
+
+              <img src="{{events.image.url}}" class="card-img" alt="course image">
+            </div>
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="col-lg-8">
+
+      <h1 class="mb-0">{{events.title}}</h1>
+      <p class="mt-4">{{events.description|safe}}</p>
+      <ul class="list-group list-group-borderless">
+        <li class="list-group-item px-0">
+          <span class="h6 fw-light"><i class="fas fa-fw fa-map-marker-alt text-primary me-2"></i>Address:</span>
+          <span>{{events.location}}</span>
+        </li>
+        <li class="list-group-item px-0">
+          <span class="h6 fw-light"><i class="far fa-money-bill-alt text-primary me-2"></i>Price:</span>
+          <span>{{events.price}}</span>
+        </li>
+        <li class="list-group-item px-0">
+          <span class="h6 fw-light"><i class="far fa-calendar-alt text-primary me-2"></i>Posted Date</span>
+          <span>{{events.created_at|date:"M j, Y"}}</span>
+        </li>
+        <li class="list-group-item px-0">
+          <span class="h6 fw-light"><i class="far fa-clock text-danger me-2"></i>Deadline:</span>
+          <span>{{events.deadline|date:"M j, Y"}}</span>
+        </li>
+      </ul>
+
+
+    </div>
+
+
+  </div>
+</div>
+</section>
+<br>
+
+
+{% endblock body %}
+{% block scripts %}
+<script src="{% static 'js/functions.js' %}"></script>
+
+{% endblock scripts %}

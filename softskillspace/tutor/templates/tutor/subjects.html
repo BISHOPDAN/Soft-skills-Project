@@ -1,0 +1,164 @@
+{% extends "partials/_account_layout.html" %}
+{% load static %}
+
+{% load i18n %}
+{% load account %}
+
+{% block title %} {% trans "Create Subjects" %} {% endblock title %}
+<link rel="stylesheet" href="{% static 'vendor/sweetalert/sweetalert2.min.css' %}">
+{% block body %}
+
+<!-- Main content START -->
+<div class="col-xl-9">
+  <!-- Edit profile START -->
+  <div class="card bg-transparent border rounded-3">
+
+    <div class="row d-flex justify-content-between">
+      <!-- Profile info -->
+      <div class="col d-md-flex justify-content-between align-items-center">
+        <!-- Card header -->
+        <div class="card-header bg-transparent border-bottom">
+          <h3 class="card-header-title mb-0">Subjects</h3>
+        </div>
+
+        <!-- Button -->
+        <div class="m-3 mb-0 d-flex align-items-center mt-2 mt-md-0">
+          <a href="#" class="btn btn-sm btn-primary mb-0" data-bs-toggle="modal" data-bs-target="#addSubject">Add New Subject</a>
+        </div>
+      </div>
+    </div>
+    <!-- Card body START -->
+    <div class="card-body">
+      <div class="table-responsive border-0">
+        <table class="table table-dark-gray align-middle p-4 mb-0 table-hover">
+          <!-- Table head -->
+          <thead>
+            <tr>
+              <th scope="col" class="border-0 rounded-start">Subject</th>
+              <th scope="col" class="border-0">Levels</th>
+              <th scope="col" class="border-0 rounded-end">Action</th>
+
+            </tr>
+          </thead>
+
+          <!-- Table body START -->
+          <tbody>
+            <!-- Table item -->
+            {% for subject in tutor_subjects %}
+            <tr>
+              <!-- Course item -->
+              <td>
+                <strong>{{subject.subject}}</strong>
+              </td>
+
+              <!-- Levels -->
+                  <td class="text-center text-sm-start">
+                    {% for level in subject.levels.all %}
+                    <div class="badge bg-primary bg-opacity-10 text-primary mb-2">{{level}} </div>
+                    &nbsp;{% if forloop.counter == 2 %}<br>{% endif %}
+                    {% endfor %}
+
+                  </td>
+
+              <!-- Action item -->
+              <td>
+                
+                <button class="btn btn-sm btn-danger-soft btn-round mb-0 btn-delete me-2" data-id="{{subject.id}}"
+                  data-text="{{subject.subject}}">
+                  <i class="bi bi-x"></i>
+                </button>
+              </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <!-- Table body END -->
+        </table>
+      </div>
+    </div>
+    <!-- Card body END -->
+  </div>
+  <!-- Edit profile END -->
+
+
+</div>
+<!-- Main content END -->
+
+<!-- Add course modal START -->
+<div class="modal fade" id="addSubject" tabindex="-1" aria-labelledby="addSubjectLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form class="modal-content" method="POST">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white" id="addSubjectLabel">Add New Subject</h5>
+        <button type="button" class="btn btn-sm btn-light mb-0" data-bs-dismiss="modal" aria-label="Close"><i
+            class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row text-start g-3">
+          {% include "partials/_form_errors.html" %}
+
+          <!-- Question -->
+          <div class="col-12">
+            {{form.subject.label_tag}}
+            {{form.subject}}
+          </div>
+
+          <div class="col-12">
+            {{form.levels.label_tag}}
+            <select class="form-select js-choice" id={{form.levels.id_for_label}} name="levels" data-search-enabled="true" multiple data-remove-item-button="true" data-position="bottom" data-max-item-count="8" data-placeholder="true">
+              {% for key, val in InstitutionType.choices %}
+                <option value="{{forloop.counter}}">{{val}}</option>
+              {% endfor %}
+              
+            </select>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger-soft my-0" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success my-0" data-bs-target="#staticBackdrop">Add Subject</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Add course modal START -->
+{% endblock body %}
+
+{% block scripts %}
+<script src="{% static 'vendor/sweetalert/sweetalert2.all.min.js' %}"></script>
+<script>
+  $(document).ready(function () {
+    $(".btn-delete").click(function () {
+      let btn = $(this);
+      let text = btn.attr("data-text");
+
+      Swal.fire({
+        icon: "warning",
+        html: `Are you sure you want to delete <b>${text}</b>`,
+        confirmButtonText: "Yes",
+        showDenyButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `{% url "tutor:tutor-subject-delete" %}`,
+            method: "POST",
+            data: { id: btn.attr("data-id") },
+            headers: { 'X-CSRFToken': '{{csrf_token}}' },
+            success: function (res) {
+              if (res.success == true) {
+                Swal.fire(res.msg, '', 'success')
+                location.reload();
+              }
+              else {
+                Swal.fire(res.msg, '', 'error')
+              }
+            }
+          })
+        }
+      })
+    })
+  });
+</script>
+{% endblock scripts %}

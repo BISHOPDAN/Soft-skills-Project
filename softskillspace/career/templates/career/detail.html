@@ -1,0 +1,99 @@
+{% extends "partials/_base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %} Career Page {% endblock title %}
+{% block body %}
+
+
+
+<section class="pb-0 pt-4 pb-md-5">
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-lg-3 align-items-center mt-4 mt-lg-5 order-2 order-lg-1">
+          <div class="text-lg-center">
+            <ul class="list-inline list-unstyled">
+
+            </ul>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-lg-9 order-1">
+
+          <span> <i class="far fa-calendar-alt text-primary"></i> Posted: {{ careers.created_at|timesince }} ago  | <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>Salary: ${{ careers.salary}}</span> | <i class="fa fa-map-marker-alt text-primary me-2"></i>Location: {{ careers.location }} </span>
+
+
+            {% if careers.jobtype == 'fulltime' %}
+                <span class="btn btn-outline-primary btn-sm">Full time</span>
+            {% elif careers.jobtype == 'parttime' %}
+                <span class="btn btn-outline-primary btn-sm">Part time</span>
+            {% else %}
+                <span class="btn btn-outline-primary btn-sm">Internship</span>
+            {% endif %}
+
+            <br>
+            <i class="far fa-calendar-alt text-danger"></i> Deadline: {{careers.deadline|date:"M j, Y"}}
+
+
+          <!-- Title -->
+          <h1 class="mt-2 mb-0 display-5">{{ careers.title }}</h1>
+          <!-- Info -->
+          <p class="mt-2">{{ careers.description|safe }}</p>
+        </div>
+      </div>
+      <br>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <a class="btn btn-success" href="#">Apply Now</a>
+      </div>
+      <br>
+<div class="container">
+  <section>
+    <div class="card ">
+
+      <div class="card-body w-100 text-center">
+        <div class="lead">
+          <h3 class="card-heading">{{ career.title }}</h3>
+          <i class="fa fa-map-marker-alt text-primary me-2"></i>
+          {{ career.location }}
+        </div>
+        <br> Posted {{ career.created_at|timesince }} ago |
+        {% if career.type == '1' %}
+        <span class="btn btn-primary">Full time</span>
+        {% elif career.type == '2' %}
+        <span class="btn btn-primary">Part time</span>
+        {% else %}
+        <span class="btn btn-primary">Internship</span>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <h4>Category: {{ career.category }}</h4>
+          <h5>Posted: {{ career.created_at|date }}</h5>
+          <h6 class="text-danger">Deadline: {{ career.deadline|date }}</h6>
+          <h6 class="text-info">Salary: {{ career.salary}}</h6>
+          <blockquote class="blockquote">
+            <p>{{ career.description }}</p>
+          </blockquote>
+
+
+        </div>
+      </div>
+    </div>
+</div>
+</section>
+<div class="d-grid gap-2 col-6 mx-auto">
+  <a class="btn btn-success" href="#">Apply Now</a>
+</div>
+<br>
+
+{% endblock body %}
+{% block scripts %}
+<script src="{% static 'js/functions.js' %}"></script>
+
+{% endblock scripts %}

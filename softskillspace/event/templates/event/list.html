@@ -1,0 +1,56 @@
+{% extends "partials/_base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %} Upcoming Events{% endblock title %}
+{% block body %}
+
+<section class="position-relative pt-0 pt-lg-5">
+  <div class="container">
+    <div class="row g-4">
+            {% for event in event %}
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="card bg-transparent">
+          <div class="overflow-hidden rounded-3">
+            <img src="{{event.image.url}}" class="card-img" alt="{{event.title}}">
+
+            <div class="bg-overlay bg-dark opacity-4"></div>
+
+          </div>
+
+
+          <div class="card-body">
+            <!-- Title -->
+            <h5 class="card-title"><a href="{% url 'event:eventdetail' event.id %}">{{event.title}}</a></h5>
+            <p class="text-truncate-2">{{event.description | safe | truncatewords:15 }}</p>
+            <!-- Info -->
+            <div class="d-flex justify-content-between">
+              <span <button class="btn btn-primary-soft btn-sm mb-2">{{event.location}}</button></span>
+              <span <button class="btn btn-success-soft btn-sm mb-2">Available</button></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% empty %}
+        <div class="row">
+          <div class="col-12 text-center">
+            <!-- Image -->
+            <img src="{% static 'images/element/online.svg' %}" class="h-200px h-md-200px m-5" alt="">
+            <!-- Subtitle -->
+            <h2>No Upcoming Events Available</h2>
+          </div>
+        </div>
+
+      {% endfor %}
+      <!-- Card item END -->
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock body %}
+{% block scripts %}
+<script src="{% static 'js/functions.js' %}"></script>
+
+{% endblock scripts %}
